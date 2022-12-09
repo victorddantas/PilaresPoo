@@ -86,9 +86,88 @@ public class Poo
         }
 
 
+        //REESCRITA DE MÉTODO:
+
+        //É quando definimos um método com a mesma assinatura na classe mãe e em alguma classe genérica.
+        //Os métodos da classe filha sempre terão prioridade aos da classe pai.
+        
+
+        //EXEMPLO DE REESCRITA DE MÉTODOS: 
+
+        //No sistema do banco, na classe mãe serviço existe o método calcularTaxa(), esse método por sua vez 
+        //é utilizado  no serviço de empréstimo porém com uma taxa diferente.
+
+
+        class Servico2 {
+
+            public double calcularTaxa(){
+                return 10;
+            }
+        }
+
+        class Emprestimo2 : Servico2 {
+            
+            public  double calcularTaxaEmprestimo() {
+                return this.Valor * 0.1;
+           }
+
+
+        }
+
+        //No exemplo acima podemos utlizar tanto o método calcularTaxa da classe Mãe, quanto o método 
+        //calcularTaxaEmprestimo da classe filha.
+        //Porém há um problema nisso, pois podemos erroneamente invocar o método errado, afinal, no caso do
+        //empréstimo não queremos o método da classe Servico. Para evitar isso o mais correto seria substituir
+        //a implemetação do método calcularTaxa da classe mãe na classe filha. Por padrão as implemnetações dos
+        //métodos de uma superclasse não podem ser modificados. Para alterar esse comportamento devemos utilizar
+        //o modificador virtual.
+
+        class Servico3 {
+
+            public virtual double calcularTaxa(){
+                return 10;
+            }
+
+        }
+
+
+        //Depois disso estamos autorizados a modificar a implementação do método na classe filha. Para isso 
+        //utilizamos o modificador override
+
+        class Empréstimo3 : Servico3 {
+            public override double calcularTaxa(){
+                return this.Valor * 0.1;
+            }
+        }
+
+
+
+        //Em outro caso, podemos ter como exemplo uma taxa de empréstimo onde temos um valor fixo de taxa mais um valor 
+        //específico.
+        //Se por ventura esse valor fixo for alterado teriamos que alterar em todas as classes que possuem ele.
+        //Nesse  caso podemos criar mais um método com esse valor fixo na classe mãe e reutiliza-lo em todas as classes
+        //filhas nos métodos reescritos. Assim se houver necessidade de alteração desse valor, será necessário apenas 
+        //modicar na classe mãe.
+
+        //EXEMPLO:
+
+        class Servico4 {
+           public virtual double calcularTaxa(){
+                return 10;
+            }
+
+            public double taxaFixa(){
+                return 5;
+            }
+        }
+
+        class Emprestimo4 : Servico4{
+            public override double calcularTaxa(){
+                return base.taxaFixa() + this.Valor * 0.1;  //aqui ao invés de se utilizar o valor 5 utilizamos o método 
+            }
+        }
 
         #endregion
-
 
 
     }
